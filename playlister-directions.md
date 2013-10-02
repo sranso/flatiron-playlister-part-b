@@ -42,3 +42,5 @@ So a user should be able to type M83 and be taken to M83's artist "page" or Midn
 If a user types the artist or genre, they should be taken to the genre or artists "page"/interface
 \# Extra Credit:
 \# Use a ruby module somewhere to refactor common functionality.
+
+Note: if someone browses by artist, and sees the artist has 4 songs and enters song 4, this is song 4 from the entire list of songs, not just the songs we just displayed for the artist.  This is ok, lets not overcomplicate things.
