@@ -27,49 +27,61 @@ end
 # end
 
 def prompt_user
-  puts "Hey user, browse by artist or genre (type what you'd like)."
+  ap "Hey user, browse by artist or genre (type what you'd like)."
   text = gets.chomp.downcase
   if text == "artist"
-    choose_artist
+    artists
   elsif text == "genre"
-    choose_genre
+    genres
   else
-    "Try again! Type artist or genre."
+    ap "Try again! Type artist or genre."
   end
 end
 
-def artist
+def artists
   ap "#{Artist.count} total artists."
   Artist.all.each do |artist|
-    ap "#{artist}, Song count: #{artist.songs_count}." #songs_count isn't working... each artist has a song count of one: rather than one adele having a count of 2, there are 2 adeles with a count of 1
+    ap "#{artist.name}, Song count: #{artist.songs_count}." #songs_count isn't working... each artist has a song count of one: rather than one adele having a count of 2, there are 2 adeles with a count of 1
   end
   choose_artist
 end
 
 def choose_artist
-  ap "Select artist."
+  ap "Choose an artist."
+  num = 0
   text = gets.chomp.downcase
-  ap "Songs:"
   Artist.all.each do |artist|
-    if text == artist.name.downcase
+    if artist.name.downcase.include?(text) #need to fix at some point for cases when more than one artist include text entered
+      ap "#{artist.name} - #{artist.songs_count} Songs"
       artist.songs.each do |song|
-        ap song.title
-      end
-      # ap "Songs: #{artist.songs}, Genres: #{artist.genres}" #artist.songs and .genres are arrays
-    end
-  end
-  ap "Genres:"
-  Artist.all.each do |artist|
-    if text == artist.name.downcase
-      artist.genres.each do |genre|
-        ap genre.name
+        num += 1
+        ap "#{num}. #{song.title} - #{song.genre.name}"
       end
     end
   end
 end
 
-def genre
-  ap Genre.all
+def genres #need to sort by top number of songs
+  Genre.all.each do |genre| #not unique... there are multipes
+    ap "#{genre.name}: #{genre.songs.size} Songs, #{genre.artists.size} Artists"
+  end
+  choose_genre
 end
 
-choose_artist
+def choose_genre
+  ap "Choose a genre."
+  num = 0
+  text = gets.chomp.downcase
+  Genre.all.each do |genre|
+    if genre.name.downcase.include?(text) #need to fix at some point for cases when more than one artist include text entered
+      ap "#{genre.name}"
+      genre.songs.each do |song|
+        num += 1
+        ap "#{num}. #{song.title} - #{song.artist}" #song.artist doesn't work...
+      end
+    end
+  end
+end
+
+# genres
+choose_genre
