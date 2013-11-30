@@ -14,6 +14,55 @@ Dir["./data/*.mp3"].each do |file|
   newfile[0].add_song(song_genre[0]) #add song to artist
 end
 
-# p Artist.count
-ap Artist.all
-# p Genre.all
+# ap Artist.count
+# ap Artist.all
+# ap Genre.all
+
+# Genre.all.each do |genre|
+#   p genre.songs if genre.name == "folk"
+# end
+
+# def each_artist
+  
+# end
+
+def prompt_user
+  puts "Hey user, browse by artist or genre (type what you'd like)."
+  text = gets.chomp.downcase
+  if text == "artist"
+    choose_artist
+  elsif text == "genre"
+    choose_genre
+  else
+    "Try again! Type artist or genre."
+  end
+end
+
+def artist
+  ap "#{Artist.count} total artists."
+  Artist.all.each do |artist|
+    ap "#{artist}, Song count: #{artist.songs_count}." #songs_count isn't working... each artist has a song count of one: rather than one adele having a count of 2, there are 2 adeles with a count of 1
+  end
+  choose_artist
+end
+
+def choose_artist
+  ap "Select artist."
+  text = gets.chomp.downcase
+  Artist.all.each do |artist|
+    debugger
+    if text == artist.name.downcase
+      # songs 
+      # artist.songs.each do |song|
+      #   p song
+      # end
+      ap "Songs: #{artist.songs}, Genres: #{artist.genres}" #artist.songs and .genres are arrays
+    end
+  end
+end
+
+def genre
+  ap Genre.all
+end
+
+choose_artist
