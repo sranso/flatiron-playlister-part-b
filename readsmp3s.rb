@@ -49,14 +49,21 @@ end
 def choose_artist
   ap "Select artist."
   text = gets.chomp.downcase
+  ap "Songs:"
   Artist.all.each do |artist|
-    debugger
     if text == artist.name.downcase
-      # songs 
-      # artist.songs.each do |song|
-      #   p song
-      # end
-      ap "Songs: #{artist.songs}, Genres: #{artist.genres}" #artist.songs and .genres are arrays
+      artist.songs.each do |song|
+        ap song.title
+      end
+      # ap "Songs: #{artist.songs}, Genres: #{artist.genres}" #artist.songs and .genres are arrays
+    end
+  end
+  ap "Genres:"
+  Artist.all.each do |artist|
+    if text == artist.name.downcase
+      artist.genres.each do |genre|
+        ap genre.name
+      end
     end
   end
 end
