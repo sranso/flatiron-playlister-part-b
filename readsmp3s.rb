@@ -5,25 +5,26 @@ require 'debugger'
 require 'awesome_print'
 
 Dir["./data/*.mp3"].each do |file|
-  newfile = file[7..-6].split(" - ")
-  newfile[0] = Artist.new(newfile[0]) unless Artist.all.include?(newfile[0])
+  new_file = file[7..-6].split(" - ")
+  artist_array = Artist.all.select {|artist| artist.name == new_file[0]}
+  if artist_array.size == 0
+    new_artist = Artist.new(new_file[0])
+  else
+    new_artist = artist_array[0]
+  end
+  song_genre = new_file[1].split(" [")
+  new_song = Song.new(song_genre[0]) #create new song
+  genre_array = Genre.all.select {|genre| genre.name == song_genre[1].capitalize}
   # debugger
-  # puts "hi"
-  # newfile[0] = Artist.new(newfile[0])
-  song_genre = newfile[1].split(" [")
-  song_genre[0] = Song.new(song_genre[0]) #create new song
-  song_genre[1] = Genre.new(song_genre[1]) #create new genre
-  song_genre[0].genre=(song_genre[1]) #add genre to song
-  newfile[0].add_song(song_genre[0]) #add song to artist
+  if genre_array.size == 0
+    new_genre = Genre.new(song_genre[1]) #set new_genre eq to existing genre
+  else
+    new_genre = genre_array[0] #create new genre
+  end
+  # new_genre = Genre.new(song_genre[1]) #create new genre
+  new_song.genre=(new_genre) #add genre to song
+  new_artist.add_song(new_song) #add song to artist
 end
-# TO FIX
-# 1. 39 artist.songs_count isn't working... each artist has a song count of 1: 
-# rather than one adele having a count of 2, there are 2 adeles with a count of 1
-# 2. 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
-# need to fix at some point for cases when more than one artist include text entered
-# 3. 60 Genre.all isn't working.. there are multipes
-# 4. 75 song.artist
-# 5. create new artist and genre only it that doesn't already exist
 
 def prompt_user
   ap "Hey user, browse by artist or genre (type what you'd like)."
@@ -82,11 +83,9 @@ def choose_genre
   end
 end
 
-# 1
-ap "#{Artist.count} total artists."
-Artist.all.each do |artist|
-  ap "#{artist.name}, Song count: #{artist.songs_count}." #songs_count isn't working... each artist has a song count of one: rather than one adele having a count of 2, there are 2 adeles with a count of 1
-end
-
-
-
+# prompt_user
+# TO FIX
+# 2. 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
+# need to fix at some point for cases when more than one artist include text entered
+# 4. 75 song.artist doesn't give any artist at all
+# choose_genre
