@@ -46,7 +46,7 @@ def prompt_user
   elsif text == "genre"
     genres
   elsif text == "q" || (text == "quit")
-    text
+    exit
   else
     ap "Try again! Type artist or genre."
   end
@@ -93,7 +93,7 @@ def choose_genre
   if text == "h" || (text == "help")
     help
   else Genre.all.each do |genre|
-    if genre.name.downcase.include?(text) #need to fix at some point for cases when more than one artist include text entered
+    if genre.name.downcase.include?(text)
       ap "#{genre.name} - #{genre.songs.size} Songs"
       genre.songs.each do |song|
         num += 1
