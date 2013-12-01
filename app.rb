@@ -24,16 +24,33 @@ Dir["./data/*.mp3"].each do |file|
   new_artist.add_song(new_song) #add song to artist
 end
 
+def help
+  ap "Commands at your disposal:"
+  ap "artist         Shows you all artists"
+  ap "<artist name>  Shows you all artist's songs and genres"
+  ap "genre          Shows you all genres"
+  ap "<genre name>   Shows you all genre's songs and artists"
+  ap "h              Takes you here!"
+  ap "help           Takes you here!"
+  ap "q              Exits the program"
+  ap "quit           Exits the program"
+end
+
 def prompt_user
-  ap "Hey user, browse by artist or genre (type what you'd like)."
+  ap "Browse by artist or genre (type what you'd like)."
   text = gets.chomp.downcase
-  if text == "artist"
+  if text == "h" || (text == "help")
+    help
+  elsif text == "artist"
     artists
   elsif text == "genre"
     genres
+  elsif text == "q" || (text == "quit")
+    text
   else
     ap "Try again! Type artist or genre."
   end
+  text
 end
 
 def artists
@@ -48,7 +65,9 @@ def choose_artist
   ap "Choose an artist."
   num = 0
   text = gets.chomp.downcase
-  Artist.all.each do |artist|
+  if text == "h" || (text == "help")
+    help
+  else Artist.all.each do |artist|
     if artist.name.downcase.include?(text) #need to fix at some point for cases when more than one artist include text entered
       ap "#{artist.name} - #{artist.songs_count} Songs"
       artist.songs.each do |song|
@@ -56,6 +75,7 @@ def choose_artist
         ap "#{num}. #{song.title} - #{song.genre.name}"
       end
     end
+  end
   end
 end
 
@@ -70,7 +90,9 @@ def choose_genre
   ap "Choose a genre."
   num = 0
   text = gets.chomp.downcase
-  Genre.all.each do |genre|
+  if text == "h" || (text == "help")
+    help
+  else Genre.all.each do |genre|
     if genre.name.downcase.include?(text) #need to fix at some point for cases when more than one artist include text entered
       ap "#{genre.name} - #{genre.songs.size} Songs"
       genre.songs.each do |song|
@@ -79,9 +101,16 @@ def choose_genre
       end
     end
   end
+  end
 end
 
 prompt_user
+want = true
+while want
+  last_input = prompt_user
+  want = false if last_input == "q"
+end
+
 # TO FIX
 # 2. 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
 # need to fix at some point for cases when more than one artist include text entered
