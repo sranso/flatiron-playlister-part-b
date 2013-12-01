@@ -81,7 +81,7 @@ def choose_genre
   end
 end
 
-# prompt_user
+prompt_user
 # TO FIX
 # 2. 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
 # need to fix at some point for cases when more than one artist include text entered
