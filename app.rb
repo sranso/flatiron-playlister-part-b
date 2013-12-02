@@ -73,10 +73,10 @@ end
 
 def puts_artist_song_genre(text, class_name)
   num = 0
-  Artist.all.select do |artist|
-    if artist.name.downcase.include?(text)
-      puts "#{artist.name} - #{artist.songs_count} Songs" 
-      artist.songs.each do |song|
+  class_name.all.select do |object|
+    if object.name.downcase.include?(text)
+      puts "#{object.name} - #{object.songs_count} Songs" 
+      object.songs.each do |song|
         num += 1
         puts "#{num}. #{song.title} - #{song.genre.name}"
       end         
@@ -104,27 +104,42 @@ def choose_artist
 end
 
 def genres #need to sort by top number of songs
-  Genre.all.each do |genre| #not unique... there are multipes
+  # all_genres = []
+  Genre.all.each do |genre|
     puts "#{genre.name}: #{genre.songs.size} Songs, #{genre.artists.size} Artists"
   end
   choose_genre
 end
 
+def puts_genre_song_artist(text, class_name)
+  num = 0
+  class_name.all.select do |object|
+    if object.name.downcase.include?(text)
+      puts "#{object.name} = #{object.songs.size} Songs"
+      object.songs.each do |song|
+        num += 1
+        puts "#{num}. #{song.title} - #{song.artist}"
+      end
+    end
+  end
+end
+
 def choose_genre
   puts "Choose a genre."
-  num = 0
+  # num = 0
   text = gets.chomp.downcase
   if text == "h" || (text == "help")
     help
-  elsif
-    Genre.all.each do |genre|
-      if genre.name.downcase.start_with?(text)
-        puts "#{genre.name} - #{genre.songs.size} Songs"
-        genre.songs.each do |song|
-          num += 1
-          puts "#{num}. #{song.title} - #{song.artist}" #song.artist doesn't work...
-        end
-      end
+  else
+    genres = more_than_one(text, Genre)
+    if genres
+      puts "These are the results that match your query:"
+      genres.each {|genre| puts "#{genre.name} - #{genre.songs.size} Songs"}
+      puts "Which of these genres would you like to view?"
+      text = gets.chomp.downcase
+      puts_genre_song_artist(text, Genre)
+    else
+      puts_genre_song_artist(text, Genre)
     end
   end
 end
