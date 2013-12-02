@@ -71,9 +71,21 @@ def more_than_one(text, class_name)
   similar_objects.size > 1 ? similar_objects : nil
 end
 
+def puts_artist_song_genre(text, class_name)
+  num = 0
+  Artist.all.select do |artist|
+    if artist.name.downcase.include?(text)
+      puts "#{artist.name} - #{artist.songs_count} Songs" 
+      artist.songs.each do |song|
+        num += 1
+        puts "#{num}. #{song.title} - #{song.genre.name}"
+      end         
+    end
+  end
+end
+
 def choose_artist
   puts "Choose an artist."
-  num = 0
   text = gets.chomp.downcase
   if text == "h" || (text == "help")
     help
@@ -84,25 +96,9 @@ def choose_artist
       artists.each {|artist| puts "#{artist.name} - #{artist.songs_count} Songs"}
       puts "Which of these artists would you like to view?"
       text = gets.chomp.downcase
-      Artist.all.select do |artist|
-        if artist.name.downcase.include?(text)
-          puts "#{artist.name} - #{artist.songs_count} Songs" 
-          artist.songs.each do |song|
-            num += 1
-            puts "#{num}. #{song.title} - #{song.genre.name}"
-          end         
-        end
-      end
+      puts_artist_song_genre(text, Artist)
     else
-      Artist.all.select do |artist|
-        if artist.name.downcase == text
-          puts "#{artist.name} - #{artist.songs_count} Songs"
-          artist.songs.each do |song|
-            num += 1
-            puts "#{num}. #{song.title} - #{song.genre.name}"
-          end
-        end
-      end
+      puts_artist_song_genre(text, Artist)
     end
   end
 end
