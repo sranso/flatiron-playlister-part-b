@@ -5,6 +5,11 @@ require './parser.rb'
 require 'debugger'
 
 class Playlister
+
+  def initialize
+    Parser.new
+  end
+
   def help
     puts "-".rjust(60, "-")
     puts "Commands at your disposal:"
@@ -125,13 +130,19 @@ class Playlister
     end
   end
 
-  prompt_user
-  want = true
-  while want
-    last_input = prompt_user
-    want = false if last_input == "q"
+  def run
+    prompt_user
+    want = true
+    while want
+      last_input = prompt_user
+      want = false if last_input == "q"
+    end
   end
+  
 end
+
+testrun = Playlister.new
+testrun.prompt_user
 
 # 1. create get_input method. input = gets.chomp.downcase. input.match(exit?) then exit. else return input
 # 2. put all this in a class... duh duh duhnhnn

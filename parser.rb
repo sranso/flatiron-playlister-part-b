@@ -4,7 +4,7 @@ require '../playlister_partA/lib/genre.rb'
 require 'debugger'
 
 class Parser
-  def create_objects
+  def initialize
     Dir["./data/*.mp3"].each do |file|
       new_file = file[7..-6].split(" - ")
       artist_array = Artist.all.select {|artist| artist.name == new_file[0]}
