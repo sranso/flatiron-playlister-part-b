@@ -61,7 +61,7 @@ end
 def artists
   puts "#{Artist.count} total artists."
   Artist.all.each do |artist|
-    puts "#{artist.name}, Song count: #{artist.songs_count}" #songs_count isn't working... each artist has a song count of one: rather than one adele having a count of 2, there are 2 adeles with a count of 1
+    puts "#{artist.name}, Song count: #{artist.songs_count}"
   end
   choose_artist
 end
@@ -150,9 +150,6 @@ while want
   want = false if last_input == "q"
 end
 
-# TO FIX/DO
-# 1. 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
-# need to fix at some point for cases when more than one artist include text entered
-# choose_genre
-# 2. create get_input method. input = gets.chomp.downcase. input.match(exit?) then exit. else return input
-# 3. put all this in a class... duh duh duhnhnn
+
+# 1. create get_input method. input = gets.chomp.downcase. input.match(exit?) then exit. else return input
+# 2. put all this in a class... duh duh duhnhnn
