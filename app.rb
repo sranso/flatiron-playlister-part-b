@@ -103,9 +103,9 @@ def choose_artist
   end
 end
 
-def genres #need to sort by top number of songs
-  # all_genres = []
-  Genre.all.each do |genre|
+def genres
+  sorted_genres = Genre.all.sort_by {|genre| genre.songs.size}
+  sorted_genres.reverse.each do |genre|
     puts "#{genre.name}: #{genre.songs.size} Songs, #{genre.artists.size} Artists"
   end
   choose_genre
@@ -126,7 +126,6 @@ end
 
 def choose_genre
   puts "Choose a genre."
-  # num = 0
   text = gets.chomp.downcase
   if text == "h" || (text == "help")
     help
@@ -152,9 +151,8 @@ while want
 end
 
 # TO FIX/DO
-# 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
+# 1. 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
 # need to fix at some point for cases when more than one artist include text entered
 # choose_genre
-
-# create get_input method. input = gets.chomp.downcase. input.match(exit?) then exit. else return input
-
+# 2. create get_input method. input = gets.chomp.downcase. input.match(exit?) then exit. else return input
+# 3. put all this in a class... duh duh duhnhnn
