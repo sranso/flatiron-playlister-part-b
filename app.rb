@@ -2,7 +2,6 @@ require '../playlister_partA/lib/artist.rb'
 require '../playlister_partA/lib/song.rb'
 require '../playlister_partA/lib/genre.rb'
 require 'debugger'
-require 'awesome_print'
 
 Dir["./data/*.mp3"].each do |file|
   new_file = file[7..-6].split(" - ")
@@ -25,19 +24,25 @@ Dir["./data/*.mp3"].each do |file|
 end
 
 def help
-  ap "Commands at your disposal:"
-  ap "artist         Shows you all artists"
-  ap "<artist name>  Shows you all artist's songs and genres"
-  ap "genre          Shows you all genres"
-  ap "<genre name>   Shows you all genre's songs and artists"
-  ap "h              Takes you here!"
-  ap "help           Takes you here!"
-  ap "q              Exits the program"
-  ap "quit           Exits the program"
+  puts "-".rjust(60, "-")
+  puts "Commands at your disposal:"
+  puts "artist         Shows you all artists"
+  puts "<artist name>  Shows you all artist's songs and genres"
+  puts "genre          Shows you all genres"
+  puts "<genre name>   Shows you all genre's songs and artists"
+  puts "h              Takes you here!"
+  puts "help           Takes you here!"
+  puts "q              Exits the program"
+  puts "quit           Exits the program"
+  puts "-".rjust(60, "-")
 end
 
+# def input
+#   input = gets.chomp.downcase
+# end
+
 def prompt_user
-  ap "Browse by artist or genre (type what you'd like)."
+  puts "Browse by artist or genre (type what you'd like)."
   text = gets.chomp.downcase
   if text == "h" || (text == "help")
     help
@@ -48,59 +53,83 @@ def prompt_user
   elsif text == "q" || (text == "quit")
     exit
   else
-    ap "Try again! Type artist or genre."
+    puts "Type h for help."
   end
   text
 end
 
 def artists
-  ap "#{Artist.count} total artists."
+  puts "#{Artist.count} total artists."
   Artist.all.each do |artist|
-    ap "#{artist.name}, Song count: #{artist.songs_count}." #songs_count isn't working... each artist has a song count of one: rather than one adele having a count of 2, there are 2 adeles with a count of 1
+    puts "#{artist.name}, Song count: #{artist.songs_count}" #songs_count isn't working... each artist has a song count of one: rather than one adele having a count of 2, there are 2 adeles with a count of 1
   end
   choose_artist
 end
 
+def more_than_one(text, class_name)
+  similar_objects = class_name.all.select{|object| object.name.downcase.include?(text)}
+  similar_objects.size > 1 ? similar_objects : nil
+end
+
 def choose_artist
-  ap "Choose an artist."
+  puts "Choose an artist."
   num = 0
   text = gets.chomp.downcase
   if text == "h" || (text == "help")
     help
-  else Artist.all.each do |artist|
-    if artist.name.downcase.include?(text) #need to fix at some point for cases when more than one artist include text entered
-      ap "#{artist.name} - #{artist.songs_count} Songs"
-      artist.songs.each do |song|
-        num += 1
-        ap "#{num}. #{song.title} - #{song.genre.name}"
+  else
+    artists = more_than_one(text, Artist)
+    if artists
+      puts "These are the results that match your query:"
+      artists.each {|artist| puts "#{artist.name} - #{artist.songs_count} Songs"}
+      puts "Which of these artists would you like to view?"
+      text = gets.chomp.downcase
+      Artist.all.select do |artist|
+        if artist.name.downcase.include?(text)
+          puts "#{artist.name} - #{artist.songs_count} Songs" 
+          artist.songs.each do |song|
+            num += 1
+            puts "#{num}. #{song.title} - #{song.genre.name}"
+          end         
+        end
+      end
+    else
+      Artist.all.select do |artist|
+        if artist.name.downcase == text
+          puts "#{artist.name} - #{artist.songs_count} Songs"
+          artist.songs.each do |song|
+            num += 1
+            puts "#{num}. #{song.title} - #{song.genre.name}"
+          end
+        end
       end
     end
-  end
   end
 end
 
 def genres #need to sort by top number of songs
   Genre.all.each do |genre| #not unique... there are multipes
-    ap "#{genre.name}: #{genre.songs.size} Songs, #{genre.artists.size} Artists"
+    puts "#{genre.name}: #{genre.songs.size} Songs, #{genre.artists.size} Artists"
   end
   choose_genre
 end
 
 def choose_genre
-  ap "Choose a genre."
+  puts "Choose a genre."
   num = 0
   text = gets.chomp.downcase
   if text == "h" || (text == "help")
     help
-  else Genre.all.each do |genre|
-    if genre.name.downcase.include?(text)
-      ap "#{genre.name} - #{genre.songs.size} Songs"
-      genre.songs.each do |song|
-        num += 1
-        ap "#{num}. #{song.title} - #{song.artist}" #song.artist doesn't work...
+  elsif
+    Genre.all.each do |genre|
+      if genre.name.downcase.start_with?(text)
+        puts "#{genre.name} - #{genre.songs.size} Songs"
+        genre.songs.each do |song|
+          num += 1
+          puts "#{num}. #{song.title} - #{song.artist}" #song.artist doesn't work...
+        end
       end
     end
-  end
   end
 end
 
@@ -111,6 +140,10 @@ while want
   want = false if last_input == "q"
 end
 
-# TO FIX
-# 2. 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
+# TO FIX/DO
+# 49 artist.name.downcase.include?(text) and 71 genre.name.downcase.include?(text)
 # need to fix at some point for cases when more than one artist include text entered
+# choose_genre
+
+# create get_input method. input = gets.chomp.downcase. input.match(exit?) then exit. else return input
+
