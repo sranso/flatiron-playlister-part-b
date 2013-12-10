@@ -1,12 +1,12 @@
-require '../playlister_partA/lib/artist.rb'
-require '../playlister_partA/lib/song.rb'
-require '../playlister_partA/lib/genre.rb'
+require './artist.rb'
+require './song.rb'
+require './genre.rb'
 require 'debugger'
 
 class Parser
   def initialize
-    Dir["./data/*.mp3"].each do |file|
-      new_file = file[7..-6].split(" - ")
+    Dir["../data/*.mp3"].each do |file|
+      new_file = file[8..-6].split(" - ")
       artist_array = Artist.all.select {|artist| artist.name == new_file[0]}
       if artist_array.size == 0
         new_artist = Artist.new(new_file[0])
