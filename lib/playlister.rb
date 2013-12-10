@@ -5,9 +5,11 @@ require './parser.rb'
 require 'debugger'
 
 class Playlister
+  attr_accessor :input
 
   def initialize
     Parser.new
+    @input
   end
 
   def help
@@ -24,25 +26,25 @@ class Playlister
     puts "-".rjust(60, "-")
   end
 
-  # def input
-  #   input = gets.chomp.downcase
-  # end
+  def input
+    @input = gets.chomp.downcase
+  end
 
   def prompt_user
     puts "Browse by artist or genre (type what you'd like)."
-    text = gets.chomp.downcase
-    if text == "h" || (text == "help")
+    # te1xt = gets.chomp.downcase
+    if @input == "h" || (@input == "help")
       help
-    elsif text == "artist"
+    elsif @input == "artist"
       artists
-    elsif text == "genre"
+    elsif input == "genre"
       genres
-    elsif text == "q" || (text == "quit")
+    elsif input == "q" || (input == "quit")
       exit
     else
       puts "Type h for help."
     end
-    text
+    input
   end
 
   def artists
@@ -53,15 +55,15 @@ class Playlister
     choose_artist
   end
 
-  def more_than_one(text, class_name)
-    similar_objects = class_name.all.select{|object| object.name.downcase.include?(text)}
+  def more_than_one(input, class_name)
+    similar_objects = class_name.all.select{|object| object.name.downcase.include?(input)}
     similar_objects.size > 1 ? similar_objects : nil
   end
 
-  def puts_artist_song_genre(text, class_name)
+  def puts_artist_song_genre(input, class_name)
     num = 0
     class_name.all.select do |object|
-      if object.name.downcase.include?(text)
+      if object.name.downcase.include?(input)
         puts "#{object.name} - #{object.songs_count} Songs" 
         object.songs.each do |song|
           num += 1
@@ -73,19 +75,19 @@ class Playlister
 
   def choose_artist
     puts "Choose an artist."
-    text = gets.chomp.downcase
-    if text == "h" || (text == "help")
+    input = gets.chomp.downcase
+    if input == "h" || (input == "help")
       help
     else
-      artists = more_than_one(text, Artist)
+      artists = more_than_one(input, Artist)
       if artists
         puts "These are the results that match your query:"
         artists.each {|artist| puts "#{artist.name} - #{artist.songs_count} Songs"}
         puts "Which of these artists would you like to view?"
-        text = gets.chomp.downcase
-        puts_artist_song_genre(text, Artist)
+        input = gets.chomp.downcase
+        puts_artist_song_genre(input, Artist)
       else
-        puts_artist_song_genre(text, Artist)
+        puts_artist_song_genre(input, Artist)
       end
     end
   end
@@ -98,10 +100,10 @@ class Playlister
     choose_genre
   end
 
-  def puts_genre_song_artist(text, class_name)
+  def puts_genre_song_artist(input, class_name)
     num = 0
     class_name.all.select do |object|
-      if object.name.downcase.include?(text)
+      if object.name.downcase.include?(input)
         puts "#{object.name} = #{object.songs.size} Songs"
         object.songs.each do |song|
           num += 1
@@ -113,19 +115,19 @@ class Playlister
 
   def choose_genre
     puts "Choose a genre."
-    text = gets.chomp.downcase
-    if text == "h" || (text == "help")
+    input = gets.chomp.downcase
+    if input == "h" || (input == "help")
       help
     else
-      genres = more_than_one(text, Genre)
+      genres = more_than_one(input, Genre)
       if genres
         puts "These are the results that match your query:"
         genres.each {|genre| puts "#{genre.name} - #{genre.songs.size} Songs"}
         puts "Which of these genres would you like to view?"
-        text = gets.chomp.downcase
-        puts_genre_song_artist(text, Genre)
+        input = gets.chomp.downcase
+        puts_genre_song_artist(input, Genre)
       else
-        puts_genre_song_artist(text, Genre)
+        puts_genre_song_artist(input, Genre)
       end
     end
   end
@@ -138,11 +140,12 @@ class Playlister
       want = false if last_input == "q"
     end
   end
-  
+
 end
 
 testrun = Playlister.new
 testrun.prompt_user
 
 # 1. create get_input method. input = gets.chomp.downcase. input.match(exit?) then exit. else return input
-# 2. put all this in a class... duh duh duhnhnn
+# 2. put all this in a class... duh duh duhnhnn CHECK
+# 3. object oriented programming... put methods in appropriate class

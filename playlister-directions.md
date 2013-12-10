@@ -14,8 +14,7 @@ and you'd want to define the relationships between the objects (ie add the song 
  
 Your CLI should prompt the user with "Browse by artist or genre".  If they type "artist" and hit enter it should take them to the next section which should print out a list of artists, or genres.  The artist index must list all the artists. This list must be sorted alphabetically.
 In addition to the Artists name, the artists total song count should be displayed.  This list should also say how many Artists there are in total.  Your CLI should prompt the user with "Select Artist"
-When they type in the name of an artist your program should print out a list of 
-songs and genres.
+When they type in the name of an artist your program should print out a list of songs and genres.
 For example
  
 ####Dave Matthews Band - 2 Songs  
@@ -30,8 +29,8 @@ Folk: 8 Songs, 3 Artists
  
 Once the user types a genre and hits enter they should be taken to the individual genre "page"
  
-The genres page should list the name of the songs, linking to the individual
-\# song and artists. Also include the total unique artists and song counts in the genre.
+The genres page should list the name of the songs, linking to the individual song and artists.
+Also include the total unique artists and song counts in the genre.
  
 ####Folk    
 #####1. M83 - Midnight City  
@@ -40,6 +39,7 @@ The genres page should list the name of the songs, linking to the individual
 So a user should be able to type M83 and be taken to M83's artist "page" or Midnight City and get taken to the songs "page".  The song page should list all the available information on the song, it's artist and genre.
  
 If a user types the artist or genre, they should be taken to the genre or artists "page"/interface
+
 \# Extra Credit:
 \# Use a ruby module somewhere to refactor common functionality.
 
